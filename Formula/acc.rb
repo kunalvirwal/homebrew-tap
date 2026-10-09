@@ -2,14 +2,13 @@ class Acc < Formula
   desc "Compose CLI for Apple Containers"
   homepage "https://github.com/kunalvirwal/apple-container-compose"
 
-  url "https://github.com/kunalvirwal/apple-container-compose/archive/refs/tags/v0.1.1.tar.gz"
-  sha256 "d347c21002a81d97f647cd4cde3aeb66c129c033e6e427a2686593a0ef1bf1fc"
+  url "https://github.com/kunalvirwal/apple-container-compose/archive/refs/tags/v0.1.2.tar.gz"
+  sha256 "5c3526dfafd9fc212b8aeb9fde9867ad45ed8bdad7531c81a0d46d88460d71b9"
   license "Apache-2.0"
 
   depends_on macos: :tahoe
   depends_on arch: :arm64
   depends_on "go" => :build
-  depends_on "container"
 
   def fetch
     system "go", "mod", "download"
@@ -22,6 +21,16 @@ class Acc < Formula
            "-mod=readonly",
            *std_go_args(output: bin/"acc"),
            "./cmd/acc"
+  end
+
+  def caveats
+    <<~EOS
+      ACC requires Apple's container CLI, installed separately:
+        https://github.com/apple/container#get-started
+
+      Start the runtime before using ACC:
+        container system start
+    EOS
   end
 
   test do
